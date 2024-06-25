@@ -1,0 +1,9 @@
+.tab__li::after {
+    display: block;
+    content: attr(title);
+    font-weight: 500;
+    height: 0px;
+    color: transparent;
+    overflow: hidden;
+    visibility: hidden;
+}

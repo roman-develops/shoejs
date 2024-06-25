@@ -1,0 +1,14 @@
+.tab__selected-indicator {
+    width: 30px;
+    height: 2px;
+    margin-top: 10px;
+    border-radius: 100px;
+    background-color: #5594F1;
+
+    visibility: hidden;
+    opacity: 0;
+
+    scale: 70%;
+
+    transition: visibility 0s, opacity 0.5s, scale 0.8s ease;
+}

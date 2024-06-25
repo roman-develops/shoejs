@@ -1,0 +1,10 @@
+.tab {
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+
+    user-select: none;
+
+    transition: color 0.5s ease;
+}

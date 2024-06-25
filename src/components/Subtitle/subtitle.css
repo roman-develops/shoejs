@@ -1,0 +1,11 @@
+.subtitle {
+    font-family: 'Raleway', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 41px;
+    line-height: 120%;
+    letter-spacing: -0.02em;
+
+    margin: 0;
+}

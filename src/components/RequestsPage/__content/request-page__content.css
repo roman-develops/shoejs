@@ -1,0 +1,6 @@
+.request-page__content {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+}

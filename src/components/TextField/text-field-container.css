@@ -1,0 +1,7 @@
+.text-field-container {
+    border: 2px solid #F2F2F2;
+    box-sizing: border-box;
+    border-radius: 50px;
+    padding: 17px 35px 22px 35px;
+    cursor: text;
+}

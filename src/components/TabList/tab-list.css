@@ -1,0 +1,15 @@
+.tab-list {
+    all: unset;
+    list-style-type: none;
+
+    display: flex;
+    flex-direction: row;
+    column-gap: 30px;
+
+    font-weight: 400;
+    font-style: normal;
+    color: #161616;
+
+    font-size: 21px;
+    line-height: 150%;
+}

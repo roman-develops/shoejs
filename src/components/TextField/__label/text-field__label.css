@@ -1,0 +1,9 @@
+.text-field__label {
+    background-color: #fff;
+    padding: 0 5px;
+    display: inline-block;
+    cursor: text;
+    color: #161616;
+    font-size: 16px;
+    line-height: 150%;
+}

@@ -1,0 +1,10 @@
+.text-area__textarea {
+    all: unset;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+    color: #000;
+    font-size: 21px;
+    line-height: 150%;
+}
