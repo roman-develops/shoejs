@@ -15,6 +15,7 @@ const Main = () => {
   const [sendDestination, setSendDestination] = useState(localStorage.getItem('sendDestination') || '');
   const [sendBody, setSendBody] = useState(localStorage.getItem('sendBody') || '');
   const [subscribeDestination, setSubscribeDestination] = useState(localStorage.getItem('subscribeDestination') || '');
+  const [connected, setConnected] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('connectEndpoint', connectEndpoint);
@@ -24,6 +25,27 @@ const Main = () => {
     localStorage.setItem('sendBody', sendBody);
   }, [connectEndpoint, connectHeaders, subscribeDestination, sendDestination, sendBody]);
 
+  const switchConnection = (connectEndpoint: string, headers: any) => {
+    if (connected) {
+      setConnected(false);
+      setMessages(prevMessages => [...prevMessages, {text: 'Disconnected', type: 'info'}]);
+      stompClient.disconnect();
+    } else {
+      const sock = new SockJS(connectEndpoint);
+      stompClient = Stomp.over(sock);
+      stompClient.connect(headers, onConnected, onError);
+    }
+  };
+
+  const onConnected = () => {
+    setConnected(true);
+    setMessages(prevMessages => [...prevMessages, {text: 'Connected to ' + connectEndpoint, type: 'info'}]);
+    console.log('Connected');
+  };
+
+  const onError = (error: any) => {
+    console.log('Failed to connect', error);
+  };
   
   return (
     <div className='main'>
@@ -32,7 +54,7 @@ const Main = () => {
         onConnectEndpointChange={newValue => setConnectEndpoint(newValue)}
         connectHeaders={connectHeaders}
         onConnectHeadersChange={newValue => setConnectHeaders(newValue)}
-        onConnect={() => connect(connectEndpoint, JSON.parse(connectHeaders || ''))}
+        onConnect={() => switchConnection(connectEndpoint, JSON.parse(connectHeaders || ''))}
         subscribeDestination={subscribeDestination}
         onSubscribeDestinationChange={newValue => setSubscribeDestination(newValue)}
         sendDestination={sendDestination}
@@ -48,6 +70,7 @@ const Main = () => {
             })
           }
         }
+        connected={connected}
         className='main__inner-page' 
       />
       <MessagesPage className='main__inner-page' messages={messages}/>
@@ -56,17 +79,3 @@ const Main = () => {
 }
 
 export default Main
-
-const connect = (connectEndpoint: string, headers: any) => {
-    const sock = new SockJS(connectEndpoint);
-    stompClient = Stomp.over(sock);
-    stompClient.connect(headers, onConnected, onError);
-};
-
-const onConnected = () => {
-  console.log('Connected');
-};
-
-const onError = (error: any) => {
-  console.log('Failed to connect', error);
-};

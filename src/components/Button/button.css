@@ -6,8 +6,6 @@
 
     font-weight: 400;
     font-style: normal;
-    background-color: #161616;
-    color: #fff;
 
     padding: 19px 45px 24px 45px;
     font-size: 21px;
@@ -15,7 +13,7 @@
 
     user-select: none;
     
-    transition: scale 0.3s ease;
+    transition: scale 0.3s, background-color 0.15s, color 0.15s ease;
 }
 
 .button:hover {

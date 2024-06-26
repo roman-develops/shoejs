@@ -15,15 +15,16 @@ export interface Props {
   connectHeaders?: string;
   onConnectHeadersChange: (value: string) => void;
   onConnect?: () => void;
+  connected?: boolean;
   className?: string;
 }
 
-const ConnectPage = ({connectEndpoint, onConnectEndpointChange, connectHeaders, onConnectHeadersChange, onConnect, className}: Props) => {
+const ConnectPage = ({connectEndpoint, onConnectEndpointChange, connectHeaders, onConnectHeadersChange, onConnect, connected, className}: Props) => {
   return (
     <div className={`connect-page ${className}`}>
       <TextField className='connect-page__text-field' placeholder='Endpoint' example='http://localhost:8080/ws' value={connectEndpoint} onValueChange={onConnectEndpointChange}/>
       <TextArea className='connect-page__text-area' placeholder='Headers JSON' example='{“Authorication”: Bearer eyJhbGciOiJSUzI}' value={connectHeaders} onValueChange={onConnectHeadersChange}/>
-      <Button text='Connect' className='connect-page__button' onClick={onConnect} />
+      <Button text={connected ? 'Disconnect' : 'Connect'} styleType={connected ? 'secondary' : 'primary'} className='connect-page__button' onClick={onConnect} />
     </div>
   )
 }

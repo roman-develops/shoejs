@@ -26,6 +26,7 @@ interface Props {
   onSendBodyChange: (value: string) => void;
   onSend?: () => void;
   onSubscribe?: () => void;
+  connected?: boolean;
   className?: string;
 }
 
@@ -42,6 +43,7 @@ const RequestsPage = ({connectEndpoint,
                         onSendBodyChange, 
                         onSend,
                         onSubscribe, 
+                        connected,
                         className}: Props)=> {
   const [selectedTab, setSelectedTab] = useState('Connect');
   
@@ -63,7 +65,7 @@ const RequestsPage = ({connectEndpoint,
       selectedTab={selectedTab} setSelectedTab={setSelectedTab}/>
 
       <div className="request-page__content">
-      {selectedTab === 'Connect' && <ConnectPage connectEndpoint={connectEndpoint} onConnectEndpointChange={onConnectEndpointChange} connectHeaders={connectHeaders} onConnectHeadersChange={onConnectHeadersChange} onConnect={onConnect} /> }
+      {selectedTab === 'Connect' && <ConnectPage connected={connected} connectEndpoint={connectEndpoint} onConnectEndpointChange={onConnectEndpointChange} connectHeaders={connectHeaders} onConnectHeadersChange={onConnectHeadersChange} onConnect={onConnect} /> }
       {selectedTab === 'Subscribe' && <SubscribePage subscribeDestination={subscribeDestination} onSubscribeDestinationChange={onSubscribeDestinationChange} onSubscribe={onSubscribe}/> }
       {selectedTab === 'Send' && <SendPage sendDestination={sendDestination} onSendDestinationChange={onSendDestinationChange} sendBody={sendBody} onSendBodyChange={onSendBodyChange} onSend={onSend} /> }
       </div>
