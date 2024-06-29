@@ -1,4 +1,3 @@
-import React from 'react'
 import './button.css'
 import './_type/_primary/button_type_primary.css'
 import './_type/_secondary/button_type_secondary.css'
@@ -25,7 +24,7 @@ const Button = ({
 
     return (
         <button
-            type='button    '
+            type='button'
             onClick={onClick}
             className={`button ${styleTypeClassName.get(styleType)} ${className}`}
         >

@@ -1,4 +1,3 @@
-import React from 'react'
 import './tab-list.css'
 import Tab, {TabProps} from "../Tab/Tab";
 

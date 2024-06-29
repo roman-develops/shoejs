@@ -1,4 +1,3 @@
-import React from 'react'
 import './connect-page.css'
 import './__label-container/connect-page__label-container.css'
 import './__text-area/connect-page__text-area.css'

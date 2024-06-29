@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import './requests-page.css'
 import './__subtitle/requests-page__subtitle.css'
 import './__content/request-page__content.css'
@@ -23,7 +23,7 @@ interface Props {
     onSendBodyChange: (value: string) => void;
     onSend: () => void;
     onSubscribe: () => void;
-    onUnsubscribe: (destination) => void;
+    onUnsubscribe: (destination: string) => void;
     subscriptionDestinations: string[];
     connected?: boolean;
     className?: string;

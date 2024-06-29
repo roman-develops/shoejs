@@ -3,10 +3,10 @@ import MessagesPage from "../MessagesPage/MessagesPage"
 import RequestsPage from "../RequestsPage/RequestsPage"
 import './main.css'
 import './__inner-page/main__inner-page.css'
-import {Stomp} from '@stomp/stompjs';
+import {Client, StompConfig} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-let stompClient;
+let stompClient: Client;
 
 const Main = () => {
     const [messages, setMessages] = useState([]);
@@ -16,7 +16,7 @@ const Main = () => {
     const [sendBody, setSendBody] = useState(localStorage.getItem('sendBody') || '');
     const [subscribeDestination, setSubscribeDestination] = useState(localStorage.getItem('subscribeDestination') || '');
     const [connected, setConnected] = useState(false);
-    const [subscriptions, setSubscriptions] = useState([]);
+    const [subscriptionDestinations, setSubscriptionDestinations] = useState([]);
 
     useEffect(() => {
         localStorage.setItem('connectEndpoint', connectEndpoint);
@@ -31,47 +31,63 @@ const Main = () => {
         if (connected) {
             setConnected(false);
             pushMessageToTop({text: 'Disconnected', type: 'info'});
-            stompClient.disconnect();
+            stompClient.deactivate();
         } else {
             pushMessageToTop({text: 'Trying to connect...', type: 'info'});
-            const sock = new SockJS(connectEndpoint);
-            stompClient = Stomp.over(sock);
-            stompClient.connect(JSON.parse(connectHeaders || ''), onConnected, onError);
+            let stompConfig: StompConfig = {
+                webSocketFactory: () => new SockJS(connectEndpoint),
+                beforeConnect: function() {
+                    this.connectHeaders = JSON.parse(connectHeaders || '');
+                },
+                onConnect: () => {
+                    setConnected(true);
+                    pushMessageToTop({text: 'Connected to ' + connectEndpoint, type: 'info'});
+                    console.log('Connected');
+                },
+                onStompError: (error) => {
+                    pushMessageToTop({text: JSON.stringify(error), type: 'error'});
+                    console.log('Failed to connect', error);
+                },
+                debug: (log: string) => {
+                    let type: string = 'info';
+
+                    if (log.startsWith('>>>')) {
+                        type = 'outcome';
+                    } else if (log.startsWith('<<<')) {
+                        type = 'income';
+                    }
+
+                    pushMessageToTop({text: log, type: type});
+                    console.log(log);
+                },
+            };
+
+            stompClient = new Client(stompConfig);
+            stompConfig
+
+            stompClient.activate();
         }
     };
 
     const send = () => {
         if (connected) {
             pushMessageToTop({text: 'Sent to ' + sendDestination, type: 'info'});
-            stompClient.send(sendDestination, sendBody);
+            stompClient.publish({destination: sendDestination, body: sendBody });
         } else {
             pushMessageToTop({text: 'You are not connected to send a message', type: 'error'});
         }
     };
 
     const subscribe = () => {
-        pushSubscriptionToTop(subscribeDestination, stompClient.subscribe(subscribeDestination, (payload) => {
-            pushMessageToTop({text: JSON.stringify(payload), type: 'income'});
-        }));
+        pushSubscriptionToTop(subscribeDestination, stompClient.subscribe(subscribeDestination, () => {}));
     };
 
     const unsubscribe = (destination) => {
-        subscriptions
+        subscriptionDestinations
             .filter(subscription => subscription.destination == destination)
             .forEach(subscription => subscription.subscription.unsubscribe());
 
-        setSubscriptions(subscriptions.filter(subscription => subscription.destination !== destination));
-    };
-
-    const onConnected = () => {
-        setConnected(true);
-        pushMessageToTop({text: 'Connected to ' + connectEndpoint, type: 'info'});
-        console.log('Connected');
-    };
-
-    const onError = (error) => {
-        pushMessageToTop({text: JSON.stringify(error), type: 'error'});
-        console.log('Failed to connect', error);
+        setSubscriptionDestinations(subscriptionDestinations.filter(subscription => subscription.destination !== destination));
     };
 
     const pushMessageToTop = (message) => {
@@ -79,7 +95,7 @@ const Main = () => {
     };
 
     const pushSubscriptionToTop = (destination, subscription) => {
-        setSubscriptions(prevSubscriptions => [
+        setSubscriptionDestinations(prevSubscriptions => [
             {
                 destination: destination,
                 subscription: subscription
@@ -103,7 +119,7 @@ const Main = () => {
                 onSend={send}
                 onSubscribe={subscribe}
                 onUnsubscribe={unsubscribe}
-                subscriptionDestinations={subscriptions.map(subscription => subscription.destination)}
+                subscriptionDestinations={subscriptionDestinations.map(subscription => subscription.destination)}
                 connected={connected}
                 className='main__inner-page'
             />

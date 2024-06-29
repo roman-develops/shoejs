@@ -1,4 +1,3 @@
-import React from 'react'
 import './tab.css'
 import './__selected-indicator/tab__selected-indicator.css'
 import './__selected-indicator/_state/_show/tab_state_show.css'

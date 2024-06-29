@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import {useState} from 'react'
 import './message.css'
 import './_type/message_type_income.css'
 import './_type/message_type_outcome.css'

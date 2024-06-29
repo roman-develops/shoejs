@@ -1,11 +1,10 @@
-import React from 'react'
 import './subscription-list.css'
 import Subscription from "../Subscription/Subscription.tsx";
 
 interface Props {
     destinations: string[];
     className?: string;
-    onUnsubscribe: (destination) => void;
+    onUnsubscribe: (destination: string) => void;
 }
 
 const SubscriptionList = ({destinations, className = '', onUnsubscribe}: Props) => {

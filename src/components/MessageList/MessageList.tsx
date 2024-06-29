@@ -1,4 +1,3 @@
-import React from 'react'
 import './message-list.css'
 import Message, {MessageProps} from '../Message/Message'
 

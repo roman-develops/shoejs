@@ -1,4 +1,3 @@
-import React from 'react'
 import './__text-field/subscribe-page__text-field.css'
 import './__subscription-list/subscribe-page__subscription-list.css'
 import Button from '../Button/Button'
@@ -9,7 +8,7 @@ interface Props {
     subscribeDestination: string;
     onSubscribeDestinationChange: (value: string) => void;
     onSubscribe: () => void;
-    onUnsubscribe: (destination) => void;
+    onUnsubscribe: (destination: string) => void;
     subscriptionDestinations: string[];
 }
 

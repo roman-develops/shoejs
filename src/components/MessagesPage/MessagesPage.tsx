@@ -1,4 +1,3 @@
-import React from 'react'
 import './messages-page.css'
 import './__subtitle/message-page__subtitle.css'
 import {MessageProps} from '../Message/Message'
