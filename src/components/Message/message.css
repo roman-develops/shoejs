@@ -8,4 +8,6 @@
 
     text-wrap: nowrap;
     overflow-x: clip;
+
+    transition: scale 0.3s ease;
 }

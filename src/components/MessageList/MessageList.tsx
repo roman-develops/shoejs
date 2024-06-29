@@ -1,18 +1,18 @@
 import React from 'react'
 import './message-list.css'
-import Message, { MessageProps } from '../Message/Message'
+import Message, {MessageProps} from '../Message/Message'
 
 interface Props {
-  messages: MessageProps[];
+    messages: MessageProps[];
 }
 
 const MessageList = ({messages}: Props) => {
-  return (
-    <div className='message-list'>
-      {messages.map((message, index) => 
-        <Message {...message} />)}
-    </div>
-  )
+    return (
+        <div className='message-list'>
+            {messages.map((message) =>
+                <Message {...message} />)}
+        </div>
+    )
 }
 
 export default MessageList

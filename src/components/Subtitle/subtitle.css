@@ -8,4 +8,6 @@
     letter-spacing: -0.02em;
 
     margin: 0;
+
+    user-select: none;
 }

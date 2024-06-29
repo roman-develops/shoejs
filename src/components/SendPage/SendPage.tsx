@@ -21,7 +21,7 @@ interface Props {
 const SendPage = ({sendDestination, onSendDestinationChange, sendBody, onSendBodyChange, onSend}: Props) => {
   return (
     <div className='send-page'>
-      <TextField className='send-page__text-field' placeholder='Endpoint' example='http://localhost:8080/ws' value={sendDestination} onValueChange={onSendDestinationChange} />
+      <TextField className='send-page__text-field' placeholder='Destination' example='http://localhost:8080/ws' value={sendDestination} onValueChange={onSendDestinationChange} />
       <TextArea className='send-page__text-area' placeholder='Body' example='{“Authorication”: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJSb21hbjIiLCJleHAiOjE3MT
 }' value={sendBody} onValueChange={onSendBodyChange} />
       <Button text='Send' className='send-page__button' onClick={onSend}/>

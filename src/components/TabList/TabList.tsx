@@ -1,6 +1,6 @@
-import React, { ReactNode, useState } from 'react'
+import React from 'react'
 import './tab-list.css'
-import Tab, { TabProps } from "../Tab/Tab";
+import Tab, {TabProps} from "../Tab/Tab";
 
 interface Props {
   tabs: TabProps[];
@@ -9,16 +9,16 @@ interface Props {
   setSelectedTab: (index: string) => void;
 }
 
-const TabList = ({tabs, className, selectedTab, setSelectedTab}: Props) => {
+const TabList = (props: Props) => {
   return (
-    <ul className={`tab-list ${className}`}>
-      {tabs.map((tab, index) => 
-      <Tab 
-        {...tab} 
-        selected={tab.text === selectedTab}
-        onClick={ () => setSelectedTab(tab.text)}
-      />)}
-    </ul>
+      <ul className={`tab-list ${props.className}`}>
+        {props.tabs.map((tab) =>
+            <Tab
+                {...tab}
+                selected={tab.text === props.selectedTab}
+                onClick={() => props.setSelectedTab(tab.text)}
+            />)}
+      </ul>
   )
 }
 

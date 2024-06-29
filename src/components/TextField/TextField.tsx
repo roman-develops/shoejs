@@ -9,12 +9,18 @@ interface Props {
   id?: string;
   value: string;
   onValueChange: (value: string) => void;
-  placeholder?: string;
+  placeholder: string;
   example?: string;
   className?: string;
 }
 
-const TextField = ({id, value, onValueChange, placeholder, example, className}: Props) => {
+const TextField = ({
+                       id,
+                       value,
+                       onValueChange,
+                       placeholder,
+                       example,
+                       className}: Props) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     onValueChange(event.target.value);
   };
@@ -22,10 +28,20 @@ const TextField = ({id, value, onValueChange, placeholder, example, className}: 
   return (
     <div className={className}>
       <div className='label-container'>
-        <label className="text-field__label" htmlFor={id}>{placeholder}</label>
+        <label
+            className="text-field__label"
+            htmlFor={id}
+        >
+            {placeholder}
+        </label>
       </div>
       <div className="text-field-container">
-        <input className="text-field__input" type="text" placeholder={example} value={value} onChange={handleChange}/>
+        <input
+            className="text-field__input"
+            type="text"
+            placeholder={example}
+            value={value}
+            onChange={handleChange}/>
       </div>
     </div>
   )
