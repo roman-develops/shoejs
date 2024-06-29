@@ -3,20 +3,26 @@ import MessagesPage from "../MessagesPage/MessagesPage"
 import RequestsPage from "../RequestsPage/RequestsPage"
 import './main.css'
 import './__inner-page/main__inner-page.css'
-import {Client, StompConfig} from '@stomp/stompjs';
+import {Client, StompConfig, StompSubscription} from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
+import {MessageProps} from "../Message/Message.tsx";
 
 let stompClient: Client;
 
+interface SubscriptionDestination {
+    destination: string;
+    subscription: StompSubscription;
+}
+
 const Main = () => {
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState<MessageProps[]>([]);
     const [connectEndpoint, setConnectEndpoint] = useState(localStorage.getItem('connectEndpoint') || '');
     const [connectHeaders, setConnectHeaders] = useState(localStorage.getItem('connectHeaders') || '');
     const [sendDestination, setSendDestination] = useState(localStorage.getItem('sendDestination') || '');
     const [sendBody, setSendBody] = useState(localStorage.getItem('sendBody') || '');
     const [subscribeDestination, setSubscribeDestination] = useState(localStorage.getItem('subscribeDestination') || '');
     const [connected, setConnected] = useState(false);
-    const [subscriptionDestinations, setSubscriptionDestinations] = useState([]);
+    const [subscriptionDestinations, setSubscriptionDestinations] = useState<SubscriptionDestination[]>([]);
 
     useEffect(() => {
         localStorage.setItem('connectEndpoint', connectEndpoint);
@@ -34,7 +40,7 @@ const Main = () => {
             stompClient.deactivate();
         } else {
             pushMessageToTop({text: 'Trying to connect...', type: 'info'});
-            let stompConfig: StompConfig = {
+            const stompConfig: StompConfig = {
                 webSocketFactory: () => new SockJS(connectEndpoint),
                 beforeConnect: function() {
                     this.connectHeaders = JSON.parse(connectHeaders || '');
@@ -57,13 +63,12 @@ const Main = () => {
                         type = 'income';
                     }
 
-                    pushMessageToTop({text: log, type: type});
+                    pushMessageToTop({text: log, type: type as MessageProps['type']});
                     console.log(log);
                 },
             };
 
             stompClient = new Client(stompConfig);
-            stompConfig
 
             stompClient.activate();
         }
@@ -71,7 +76,6 @@ const Main = () => {
 
     const send = () => {
         if (connected) {
-            pushMessageToTop({text: 'Sent to ' + sendDestination, type: 'info'});
             stompClient.publish({destination: sendDestination, body: sendBody });
         } else {
             pushMessageToTop({text: 'You are not connected to send a message', type: 'error'});
@@ -79,10 +83,12 @@ const Main = () => {
     };
 
     const subscribe = () => {
-        pushSubscriptionToTop(subscribeDestination, stompClient.subscribe(subscribeDestination, () => {}));
+        pushSubscriptionToTop(subscribeDestination, stompClient.subscribe(subscribeDestination, (payload) => {
+            pushMessageToTop({text: payload.body, type: "income"});
+        }));
     };
 
-    const unsubscribe = (destination) => {
+    const unsubscribe = (destination: string) => {
         subscriptionDestinations
             .filter(subscription => subscription.destination == destination)
             .forEach(subscription => subscription.subscription.unsubscribe());
@@ -90,11 +96,11 @@ const Main = () => {
         setSubscriptionDestinations(subscriptionDestinations.filter(subscription => subscription.destination !== destination));
     };
 
-    const pushMessageToTop = (message) => {
+    const pushMessageToTop = (message: MessageProps) => {
         setMessages(prevMessages => [message, ...prevMessages]);
     };
 
-    const pushSubscriptionToTop = (destination, subscription) => {
+    const pushSubscriptionToTop = (destination: string, subscription: StompSubscription) => {
         setSubscriptionDestinations(prevSubscriptions => [
             {
                 destination: destination,
@@ -123,7 +129,10 @@ const Main = () => {
                 connected={connected}
                 className='main__inner-page'
             />
-            <MessagesPage className='main__inner-page' messages={messages}/>
+            <MessagesPage
+                className='main__inner-page'
+                messages={messages}
+            />
         </div>
     )
 }

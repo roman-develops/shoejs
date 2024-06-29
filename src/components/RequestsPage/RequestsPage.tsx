@@ -29,7 +29,11 @@ interface Props {
     className?: string;
 }
 
-const tabComponents = {
+type TabComponent = {
+    [key: string]: (props: Props) => JSX.Element;
+};
+
+const tabComponents: TabComponent = {
     'Connect': (props: Props) => (
         <ConnectPage
             connected={props.connected}

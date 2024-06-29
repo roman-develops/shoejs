@@ -13,6 +13,9 @@ ShoeJS is a React application for testing STOMP websockets using SockJS.
 </p>
 
 # Running locally
-```bash
-
-```
+1. Go to the project directory
+2. Run these commands in the console
+    ```bash
+    npm install
+    npm run dev
+    ```
