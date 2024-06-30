@@ -22,14 +22,14 @@ const SendPage = ({sendDestination, onSendDestinationChange, sendBody, onSendBod
             <TextField
                 className='send-page__text-field'
                 placeholder='Destination'
-                example='http://localhost:8080/ws'
+                example='/app/tables/o20X2mlK6d8VF2vHeqbh/create-game'
                 value={sendDestination}
                 onValueChange={onSendDestinationChange}
             />
             <TextArea
                 className='send-page__text-area'
                 placeholder='Body'
-                example='{“Authorication”: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJSb21hbjIiLCJleHAiOjE3MT}'
+                example='{“tableId”: 5}'
                 value={sendBody}
                 onValueChange={onSendBodyChange}
             />
